@@ -1,0 +1,193 @@
+#include<stdio.h>
+#include<stdlib.h>
+#include<string.h>
+#include<windows.h>
+void gotoxy(int ,int );
+char name[20];
+int dip_amt,amt=10000,acc_no,choice,with_amt,trans_amt;
+void menu();
+
+int main(){
+    gotoxy(30,2);
+    printf("------------------PBR VITS BANK------------------------------");
+     gotoxy(35,6);
+printf("ENTER YOUR NAME :");
+gets(name);
+   gotoxy(35,8);
+printf("ENTER YOUR ACCOUNT NUMBER :");
+scanf("%d",&acc_no);
+menu();
+  gotoxy(30,14);
+    printf("--------------------------------------------------------------");
+gotoxy(35,16);
+printf("Enter a choice:");
+scanf("%d",&choice);
+start:
+switch (choice)
+{
+
+case 1:Deposit_money();
+break;
+case 2:Withdraw_money();
+break;
+case 3:Transfer_money();
+break;
+case 4:Account_details();
+break;
+case 5:Transaction_details();
+break;
+case 6:Last_details();
+exit(0);
+default:
+printf("INVALID CHOICE!!!");
+break;
+}
+
+return 0;
+}
+void menu()
+{
+system("cls");
+gotoxy(30,0);
+printf("---------------------MAIN MENU------------------\n");
+ gotoxy(40,2);
+printf("1.Deposit Money \n");
+ gotoxy(40,4);
+printf("2.Withdraw money\n");
+ gotoxy(40,6);
+printf("3.Transfer money\n");
+ gotoxy(40,8);
+printf("4.Account details\n");
+ gotoxy(40,10);
+printf("5.Transaction details\n");
+ gotoxy(40,12);
+printf("6.Exit\n");
+ gotoxy(40,13);
+}
+
+void Deposit_money()
+{  gotoxy(35,18);
+printf("----------DEPOSITE ZONE----------\n");
+FILE *ptr=fopen("Account.txt","ab+"); //append mode id used when file is not created it will create the file
+gotoxy(35,19);
+printf("ENTER THE AMOUNT :");
+scanf("%d",&dip_amt);
+amt+=dip_amt;
+gotoxy(35,20);
+printf("MONEY DEPOSITED..\n");
+fprintf(ptr,"Rs%d had been deposited to your account \n",dip_amt);
+gotoxy(35,21);
+printf("CURRENT BALANCE IS :%d",amt);
+getch();
+}
+void Withdraw_money()
+{
+     gotoxy(35,18);
+printf("----------WITH_DRAW ZONE----------\n");
+    FILE *ptr=fopen("Account.txt","ab+");
+    gotoxy(35,19);
+    printf("Enter the amount : ");
+    scanf("%d",&with_amt);
+    amt-=with_amt;
+    gotoxy(35,20);
+    printf("MONEY WITH DRAWN : %d\n",with_amt);
+    fprintf(ptr,"Rs%d had been drawn from  your account %d \n",with_amt);
+    gotoxy(35,21);
+    printf("CURRENT BALANCE : %d",amt);
+    getch();
+}
+void Transfer_money(){
+
+    int ac;
+     gotoxy(35,18);
+printf("------------MONEY_TRANSFER ZONE------------\n");
+    FILE *ptr=fopen("Account.txt","ab+");
+    gotoxy(35,19);
+printf("Enter the amount :");
+scanf("%d",&trans_amt);
+gotoxy(35,20);
+printf("Enter the account number in which you want to transfer the money:");
+scanf("%d",&ac);
+if(amt<trans_amt)
+{
+
+    printf("YOU don't have sufficient amount ");
+}
+else
+{
+
+    amt-=trans_amt;
+    gotoxy(35,21);
+    printf("MONEY TRANFERRED..!!\n");
+    fprintf(ptr,"Rs%d had been transfer to your account %d \n",trans_amt,ac);
+    gotoxy(35,22);
+    printf("CURRENT BALANCE IS  %d",amt);
+
+}
+
+}
+ void Account_details()
+
+ {
+      gotoxy(35,15);
+printf("------------ACCOUNT_DETAILS ZONE------------\n");
+
+    gotoxy(35,18);
+
+     printf("ACCOUNT NO: %d\n",acc_no);
+           gotoxy(35,19);
+
+     printf("TOTAL BALANCE =%d\n",amt);
+           gotoxy(35,20);
+
+     printf("press any key........");
+     getch();
+
+ }
+ void Transaction_details()
+ {
+
+      gotoxy(35,17);
+printf("------------TRANSACTIONS_DETAILS ZONE------------\n");
+     FILE *ptr;
+     ptr=fopen("Account.txt","rb+");
+     char c=fgetc(ptr);
+     if(c==EOF)
+        {
+
+            printf("NO RECENT TRANSACTIONS\n");
+        }
+        else{
+            printf("TREANCATION DETAILS\n");
+            while(c==EOF)
+                  {
+
+                      printf("%c",c);
+                      c=fgetc(ptr);
+                  }
+        }
+        getch();
+ }
+
+void Last_details()
+{
+     gotoxy(35,17);
+printf("------------LAST_DETAILS ZONE------------\n");
+     gotoxy(35,18);
+    printf("Name:%s\n",name);
+     gotoxy(35,19);
+    printf("Account no :%d\n",name);
+     gotoxy(35,20);
+    printf("CURRENT BALANCE :%d\n",amt);
+     gotoxy(35,21);
+    printf("PRESS ANY KEY TO CONTINUEs.....\n");
+    getch();
+}
+void gotoxy(int x,int y)
+{
+        COORD c;
+        c.X=x;
+        c.Y=y;
+        SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE),c);
+}
+
